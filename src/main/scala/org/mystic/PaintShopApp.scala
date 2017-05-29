@@ -7,7 +7,12 @@ import com.typesafe.scalalogging.LazyLogging
 
 /**
   * Main class, that reads/writes from/to input/output and solves the paint shop problem
-  */
+  * For first test cases, where number of test cases (C) = 100, max(N, M) = 100, the hungarian algorithms will solve
+  * the  problem pretty efficient with complexity <p>C * (max(N, M))&#94;3</p>, which is about 100&#94;4 operations
+  *
+  * However, for C = 5 and max(N, M) = 2000, the hungarian algorithm approach will be not that good (around 5 *
+  * 2000&#94;3 operations).
+  **/
 object PaintShopApp extends App with LazyLogging {
 
   def getInfValue: Int = Int.MaxValue / 2
@@ -34,6 +39,7 @@ object PaintShopApp extends App with LazyLogging {
     * @param testCaseNumber number of the test case, that we use for output printing
     */
   def solveTestCase(testCaseNumber: Int): Unit = {
+    // reading input data
     val numberOfPaints = nextInt
     val numberOfCustomers = nextInt
     val size = Math.max(numberOfPaints, numberOfCustomers)
@@ -48,6 +54,7 @@ object PaintShopApp extends App with LazyLogging {
         arr(i)(pos) = value
       }
     }
+    // make the matrix square
     if (numberOfPaints > numberOfCustomers) {
       for (i <- Math.min(numberOfPaints, numberOfCustomers) until size) {
         for (j <- 0 until size)
@@ -56,7 +63,7 @@ object PaintShopApp extends App with LazyLogging {
     }
     debugPrint(arr)
     out.print(s"Case #$testCaseNumber: ")
-    PaintShopSolver.solveAssignmentProblem(numberOfPaints, numberOfCustomers, arr) match {
+    HungarianAlgoSolver.solveAssignmentProblem(numberOfPaints, numberOfCustomers, arr) match {
       case Some(x) => {
         x.foreach(item => out.print(s"$item "))
         out.println
