@@ -15,7 +15,7 @@ import com.typesafe.scalalogging.LazyLogging
   **/
 object PaintShopApp extends App with LazyLogging {
 
-  def getInfValue: Int = Int.MaxValue / 2
+  def getInfValue: Int = 10000
 
   /**
     * To do input/output to different sources (e.g file - change this code accordingly)

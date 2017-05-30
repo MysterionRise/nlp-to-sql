@@ -1,13 +1,14 @@
 package org.mystic
 
+import org.mystic.PaintShopApp.getInfValue
 import org.scalatest.{FlatSpec, Matchers}
 
 class SimpleTest extends FlatSpec with Matchers {
 
   "A HungarianAlgoSolver" should "return None" in {
     val response = HungarianAlgoSolver.solveAssignmentProblem(2, 2, Array(
-      Array(1, PaintShopApp.getInfValue),
-      Array(0, PaintShopApp.getInfValue)
+      Array(1, getInfValue),
+      Array(0, getInfValue)
     ))
     response should be(None)
   }

@@ -5,7 +5,7 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class BuiltInTest extends FlatSpec with Matchers {
 
-  "A HungarianAlgoSolver in test 1" should "return None" in {
+  "A HungarianAlgoSolver in test 1" should "return result (1,0,0,0,0)" in {
     val response = HungarianAlgoSolver.solveAssignmentProblem(5, 3, Array(
       Array(1, getInfValue, getInfValue, getInfValue, getInfValue),
       Array(0, 0, getInfValue, getInfValue, getInfValue),
@@ -19,8 +19,8 @@ class BuiltInTest extends FlatSpec with Matchers {
 
   "A HungarianAlgoSolver in test 2" should "return None" in {
     val response = HungarianAlgoSolver.solveAssignmentProblem(1, 2, Array(
-      Array(0, getInfValue),
-      Array(1, getInfValue)
+      Array(0, 0),
+      Array(1, 0)
     ))
     response should be (None)
   }
