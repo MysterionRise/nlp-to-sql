@@ -47,45 +47,45 @@ object HungarianAlgoSolver {
     flag
   }
 
-  def getSolution(arr: Array[Array[Int]], initialMatrix: Array[Array[Int]], numberOfPaints: Int): Array[Int] = {
-    val matrix = arr.transpose.transpose
+  private def findFirstZero(matrix: Array[Array[Int]], pos: Int): Int = matrix(pos).indexOf(0)
+
+  def getSolution(matrix: Array[Array[Int]], initialMatrix: Array[Array[Int]], numberOfPaints: Int): Array[Int] = {
     val size = matrix.length
     val rowZeros = new Array[Int](size)
     val colZeros = new Array[Int](numberOfPaints)
-    var transpose = matrix.transpose
-    for (i <- 0 until size) {
-      rowZeros(i) = matrix(i).count(_ == 0)
-    }
-    for (i <- 0 until numberOfPaints) {
-      colZeros(i) = transpose(i).count(_ == 0)
-    }
+    (0 until size).foreach(i => rowZeros(i) = matrix(i).count(_ == 0))
+    (0 until numberOfPaints).foreach(i => colZeros(i) = matrix.transpose.apply(i).count(_ == 0))
     val response = new ArrayBuffer[(Int, Int)]()
-    var pos = (rowZeros ++ colZeros).indexOf(Math.min(rowZeros.min, colZeros.min))
-    for (iter <- 0 until numberOfPaints) {
-      transpose = matrix.transpose
+    var pos = findMinPos(rowZeros, colZeros)
+    for (_ <- 0 until numberOfPaints) {
       if (pos >= size) {
         colZeros(pos - size) = getInfValue
-        val row = transpose(pos - size)
-        val firstZero = row.indexOf(0)
+        val firstZero = findFirstZero(matrix.transpose, pos - size)
+        // we coulnd't find zeros in matrix, than we couldn't find a solution
         if (firstZero == -1) {
           return Array.fill(size)(getInfValue)
         }
         response.append((pos - size, firstZero))
+
+        //cleaning up the matrix, so we will not pick up same answers again
         rowZeros(firstZero) = getInfValue
         colZeros(pos - size) = getInfValue
-        for (j <- 0 until size) {
+        for (j <- 0 until numberOfPaints) {
           matrix(pos - size)(j) = getInfValue
+        }
+        for (j <- 0 until size) {
           matrix(j)(firstZero) = getInfValue
         }
-
       } else {
         rowZeros(pos) = getInfValue
-        val row = matrix(pos)
-        val firstZero = row.indexOf(0)
+        val firstZero = findFirstZero(matrix, pos)
+        // we coulnd't find zeros in matrix, than we couldn't find a solution
         if (firstZero == -1) {
           return Array.fill(size)(getInfValue)
         }
         response.append((pos, firstZero))
+
+        //cleaning up the matrix, so we will not pick up same answers again
         rowZeros(firstZero) = getInfValue
         colZeros(pos) = getInfValue
         for (j <- 0 until size) {
@@ -95,9 +95,13 @@ object HungarianAlgoSolver {
           matrix(firstZero)(j) = getInfValue
         }
       }
-      pos = (rowZeros ++ colZeros).indexOf(Math.min(rowZeros.min, colZeros.min))
+      pos = findMinPos(rowZeros, colZeros)
     }
     response.sortBy(_._2).map(x => initialMatrix(x._1)(x._2)).toArray
+  }
+
+  private def findMinPos(rowZeros: Array[Int], colZeros: Array[Int]) = {
+    (rowZeros ++ colZeros).indexOf(Math.min(rowZeros.min, colZeros.min))
   }
 
   /**
