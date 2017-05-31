@@ -7,8 +7,8 @@ class ComplexTest extends FlatSpec with Matchers {
 
   "A HungarianAlgoSolver in test where number of paints less than customers" should "return result" in {
     val response = HungarianAlgoSolver.solveAssignmentProblem(1, 2, Array(
-      Array(1, 0),
-      Array(1, 0)
+      Array(1),
+      Array(1)
     ))
     response.get should equal(Array(1))
     response.get should have length (1)
@@ -16,10 +16,10 @@ class ComplexTest extends FlatSpec with Matchers {
 
   "A HungarianAlgoSolver in test where number of paints less than customers complex" should "return result" in {
     val response = HungarianAlgoSolver.solveAssignmentProblem(2, 4, Array(
-      Array(1, getInfValue, 0, 0),
-      Array(getInfValue, 1, 0, 0),
-      Array(1, getInfValue, 0, 0),
-      Array(getInfValue, 1, 0, 0)
+      Array(1, getInfValue),
+      Array(getInfValue, 1),
+      Array(1, getInfValue),
+      Array(getInfValue, 1)
     ))
     response.get should equal(Array(1, 1))
     response.get should have length (2)

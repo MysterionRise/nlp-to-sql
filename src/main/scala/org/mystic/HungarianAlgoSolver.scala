@@ -41,7 +41,7 @@ object HungarianAlgoSolver {
       if (min > 0) {
         flag = true
       }
-      for (j <- 0 until matrix.length)
+      for (j <- 0 until matrix(i).length)
         matrix(i)(j) -= min
     }
     flag
@@ -51,14 +51,16 @@ object HungarianAlgoSolver {
     val matrix = arr.transpose.transpose
     val size = matrix.length
     val rowZeros = new Array[Int](size)
-    val colZeros = new Array[Int](size)
+    val colZeros = new Array[Int](numberOfPaints)
     var transpose = matrix.transpose
     for (i <- 0 until size) {
       rowZeros(i) = matrix(i).count(_ == 0)
+    }
+    for (i <- 0 until numberOfPaints) {
       colZeros(i) = transpose(i).count(_ == 0)
     }
     val response = new ArrayBuffer[(Int, Int)]()
-    var pos = (rowZeros ++ colZeros).indexOf(Math.max(1, Math.min(rowZeros.min, colZeros.min)))
+    var pos = (rowZeros ++ colZeros).indexOf(Math.min(rowZeros.min, colZeros.min))
     for (iter <- 0 until numberOfPaints) {
       transpose = matrix.transpose
       if (pos >= size) {
@@ -88,6 +90,8 @@ object HungarianAlgoSolver {
         colZeros(pos) = getInfValue
         for (j <- 0 until size) {
           matrix(j)(pos) = getInfValue
+        }
+        for (j <- 0 until numberOfPaints) {
           matrix(firstZero)(j) = getInfValue
         }
       }

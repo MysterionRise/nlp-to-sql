@@ -1,6 +1,6 @@
 package org.mystic
 
-import java.io.{BufferedOutputStream, InputStreamReader, PrintWriter}
+import java.io.{BufferedOutputStream, InputStreamReader, PrintWriter, Writer}
 import java.util.Scanner
 
 import com.typesafe.scalalogging.LazyLogging
@@ -26,11 +26,9 @@ object PaintShopApp extends App with LazyLogging {
   solve
   out.close
 
-  def nextInt: Int = in.nextInt()
-
   private def solve = {
-    val numberOfTestCases = nextInt
-    (1 to nextInt).foreach(solveTestCase(_))
+    val numberOfTestCases = in.nextInt
+    (1 to numberOfTestCases).foreach(solveTestCase(_, in, out))
   }
 
   /**
@@ -38,19 +36,19 @@ object PaintShopApp extends App with LazyLogging {
     *
     * @param testCaseNumber number of the test case, that we use for output printing
     */
-  def solveTestCase(testCaseNumber: Int): Unit = {
+  def solveTestCase(testCaseNumber: Int, in: Scanner, out: Writer): Unit = {
     // reading input data
-    val numberOfPaints = nextInt
-    val numberOfCustomers = nextInt
+    val numberOfPaints = in.nextInt
+    val numberOfCustomers = in.nextInt
     val size = Math.max(numberOfPaints, numberOfCustomers)
     val arr = new Array[Array[Int]](size)
     for (i <- 0 until size)
-      arr(i) = Array.fill[Int](size)(getInfValue)
+      arr(i) = Array.fill[Int](numberOfPaints)(getInfValue)
     for (i <- 0 until numberOfCustomers) {
-      val t = nextInt
+      val t = in.nextInt
       for (_ <- 0 until t) {
-        val pos = nextInt - 1
-        val value = nextInt
+        val pos = in.nextInt - 1
+        val value = in.nextInt
         arr(i)(pos) = value
       }
     }
@@ -62,14 +60,14 @@ object PaintShopApp extends App with LazyLogging {
       }
     }
     debugPrint(arr)
-    out.print(s"Case #$testCaseNumber: ")
+    out.write(s"Case #$testCaseNumber: ")
     HungarianAlgoSolver.solveAssignmentProblem(numberOfPaints, numberOfCustomers, arr) match {
       case Some(x) => {
-        x.foreach(item => out.print(s"$item "))
-        out.println
+        x.foreach(item => out.write(s"$item "))
+        out.write("\n")
       }
       case None => {
-        out.println("IMPOSSIBLE")
+        out.write("IMPOSSIBLE\n")
       }
     }
   }
@@ -83,7 +81,7 @@ object PaintShopApp extends App with LazyLogging {
     val size = matrix.length
     val response = new StringBuilder("\n")
     for (i <- 0 until size) {
-      for (j <- 0 until size)
+      for (j <- 0 until matrix(i).length)
         response.append(s"${matrix(i)(j)} ")
       response.append("\n")
     }

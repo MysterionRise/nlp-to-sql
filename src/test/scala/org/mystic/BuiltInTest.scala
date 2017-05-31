@@ -19,8 +19,8 @@ class BuiltInTest extends FlatSpec with Matchers {
 
   "A HungarianAlgoSolver in test 2" should "return None" in {
     val response = HungarianAlgoSolver.solveAssignmentProblem(1, 2, Array(
-      Array(0, 0),
-      Array(1, 0)
+      Array(0),
+      Array(1)
     ))
     response should be (None)
   }
