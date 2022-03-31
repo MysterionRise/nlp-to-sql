@@ -972,7 +972,7 @@ def infer(
 
 def find_table_by_topic(topic, question, data_table):
     # TODO implement naive approach here
-    return "1-10601843-2"
+    return "2-17636233-1"
 
 
 if __name__ == "__main__":
